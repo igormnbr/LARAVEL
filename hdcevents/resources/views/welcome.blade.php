@@ -3,14 +3,38 @@
 @section('title', 'HDC Events')
 
 @section('content')
-        <h1>Welcome page</h1>
-        <img src = "/img/banner.jpg" width = "480" alt = "banner">
+        <div id="search-container" class="col-md-12">
+            <h1>Busque um evento</h1>
+            <form action="/" method="GET">
+                <input type="text" id="search" name="search" class="form-control" placeholder="Procurar...">
+            </form>
+        </div>
+        <div id="events-container" class="col-md-12">
+            @if($search)
+                <h2>Buscando por: {{$search}}</h2>
+            @else
+                <h2>Próximos Eventos</h2>
+                <p class="subtitle">Veja os eventos dos próximos dias</p>
+            @endif                
+            <div id="cards-containers" class="row">
+                @foreach($events as $event)
+                <div class="card cold-md-3">
+                    <img src="/img/events/{{$event->image}}" alt="{{$event->title}}">
+                    <div class="card-body">
+                        <p class="card-date">{{date('d/m/Y', strtotime($event->date))}}</p>
+                        <h5 class="card-title">{{$event->title}}</h5>
+                        <p class="card-participants">{{count($event->users)}} Participantes</p>
+                        <a href="/events/{{$event->id}}" class="btn btn-primary">Saber mais</a>
+                    </div>
+                </div>
+                @endforeach
+                @if(count($events)==0 && $search)
+                <p class="subtitle">Não foram encontrados eventos compatíveis com sua busca. <a href="/">Ver todos os eventos</a></p>
+                @elseif(count($events)==0)
+                <p class="subtitle">Não há eventos disponíveis</p>
+                @endif
+            </div>
+        </div>
 
-        @if ($nome == "Matheus")
-            <p>O nome é Matheus</p>
-        @elseif ($nome == "Igor")
-            <p>O nome é Igor</p>
-        @else
-            <p>O nome não é Matheus nem Igor</p>
-        @endif
 @endsection
+

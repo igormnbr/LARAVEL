@@ -26,22 +26,43 @@
                     </a>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="/" class="link">Eventos</a>
+                            <a href="/" class="nav-link">Eventos</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/events/create" class="link">Criar Eventos</a>
+                            <a href="/events/create" class="nav-link">Criar Eventos</a>
+                        </li>
+                        @auth
+                        <li class="nav-item">
+                            <a href="/dashboard" class="nav-link">Meus Eventos</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/" class="link">Entrar</a>
+                            <form action="/logout" method="POST">
+                            @csrf
+                                <a href="/lougout" class="nav-link" onclick="event.preventDefault(); this.closest('form').submit();">Sair</a>
+                            </form>                     
+                        </li>
+                        @endauth
+                        @guest
+                        <li class="nav-item">
+                            <a href="/login" class="nav-link">Entrar</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/" class="link">Cadastrar</a>
+                            <a href="/register" class="nav-link">Cadastrar</a>
                         </li>
+                        @endguest
                     </ul>
                 </div>
             </nav>
         </header>
-        @yield('content')
+        <main>
+            <div class="container-fluid"></div>
+            <div class="row">
+                @if(session('msg'))
+                <p class="msg">{{session('msg')}}</p>
+                @endif
+                @yield('content')
+            </div>
+        </main>
         <footer>
             <p>HDC Eventes &copy; 2024</p>
         </footer>
